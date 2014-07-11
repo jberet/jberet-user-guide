@@ -1,0 +1,1 @@
+# Batch JSL Inheritance
