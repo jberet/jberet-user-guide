@@ -1,2 +1,1 @@
-This is test-book
-
+JBeret User Guide

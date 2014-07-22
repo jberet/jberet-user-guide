@@ -1,6 +1,145 @@
 # Batch Properties
+## Batch Property Scopes
+Batch properties are defined in job xml to configure the job. There are 3 groups of batch properties, according to their scopes:
+### Job-level batch properties:
+
+To define job-level batch properties in job xml:
+
+```xml
+<job version="1.0" id="job1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
+    <properties>
+        <property name="jobProp1" value="value1"/>
+    </properties>
+    <!-- other elements omitted -->
+</job>
+```
+
+Access job-level batch properties from a batch artifact class with `javax.batch.runtime.context.JobContext#getProperties`
+
+```java
+@Named
+public class MyBatchlet extends AbstractBatchlet {
+    @Inject
+    JobContext jobContext;
+
+    private Properties jobProperties;
+
+    @Override
+    public String process() throws Exception {
+        jobProperties = jobContext.getProperties();
+        String value1 = jobProperties.getProperty("jobProp1");
+        // ...
+        return "Processed";
+    }
+}
+```
+
+Note that the properties obtained from `JobContext#getProperties` contains job-level batch properties as defined in job xml, and should not be used by application to store application data.  For this purpose, `JobContext#setTransientUserData` should be used instead.
+
+### Step-level batch properties
+
+To define step-level batch properties in job xml:
+```xml
+<step id="step1" start-limit="5" allow-start-if-complete="true">
+    <properties>
+        <property name="stepProp1" value="value1"/>
+    </properties>
+    <!-- other elements omitted -->
+</step>
+```
+
+Access step-level batch properties from a batch artifact class with `javax.batch.runtime.context.StepContext#getProperties`
+
+```java
+@Named
+public class MyBatchlet extends AbstractBatchlet {
+    @Inject
+    StepContext stepContext;
+
+    private Properties stepProperties;
+
+    @Override
+    public String process() throws Exception {
+        stepProperties = stepContext.getProperties();
+        String value1 = stepProperties.getProperty("stepProp1");
+        // ...
+        return "Processed";
+    }
+}
+```
+Note that the properties obtained from `StepContext#getProperties` contains step-level batch properties as defined in job xml, and should not be used by application to store application data.  For this purpose, `StepContext#setTransientUserData` or `StepContext#setPersistentUserData` should be used instead.
+
+### Batch artifact properties
+
+To define batch artifact properties in job xml:
+```xml
+<batchlet ref="myBatchlet">
+    <properties>
+        <property name="name1" value="value1"/>
+    </properties>
+</batchlet>
+```
+
+Batch artifact properties can be accessed from a batch artifact with injection.  The optional attribute `javax.batch.api.BatchProperty#name` tells which batch property to inject into the annotated field.  When `name` attribute is omitted, the target batch property name is the same as the field name.
+
+```java
+@Named
+public class MyBatchlet extends AbstractBatchlet {
+    @Inject
+    @BatchProperty
+    String name1;
+
+    @Inject
+    @BatchProperty(name = "name1")
+    String title;
+
+    //...
+}
+```
+
+Note that job- and step-level batch properties may not be directly injected into batch artifact classes.  However, application may inject an batch artifact property that references a job- or step-level batch property via `jobProperties` substitution.  For example,
+
+```xml
+<job id="job1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <properties>
+        <property name="jobProp1" value="value1"/>
+    </properties>
+
+    <step id="step1">
+        <properties>
+            <property name="stepProp1" value="value1"/>
+        </properties>
+
+        <batchlet ref="myBatchlet">
+            <properties>
+                <property name="prop1"
+                        value="#{jobProperties['jobProp1']}" />
+                <property name="prop2"
+                        value="#{jobProperties['stepProp1']}"/>
+            </properties>
+            <!-- other elements omitted -->
+        </batchlet>
+    </step>
+</job>
+```
+
+```java
+@Named
+public class MyBatchlet extends AbstractBatchlet {
+    @Inject
+    @BatchProperty
+    String prop1;
+
+    @Inject
+    @BatchProperty
+    String prop2;
+
+    //...
+}
+```
+
 ## Batch Property Injection with @BatchProperty
-A batch artifact class can contain fields annotated with `@Injected` and `@BatchProperty` to inject properties defined in job xml into these fields.  The injection field can be any of the following java types:
+A batch artifact class can contain fields annotated with `@Inject` and `@BatchProperty` to inject properties defined in job xml into these fields.  The injection field can be any of the following java types:
 
 * java.lang.String
 * java.lang.StringBuilder
