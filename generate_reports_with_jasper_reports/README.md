@@ -54,7 +54,9 @@ If `resource` is specified, and is a csv, xls, or xlsx resource, this property s
 If `resource` is specified, and is a CSV resource, this property specifies the field or column delimiter. Optional property. See `net.sf.jasperreports.engine.data.JRCsvDataSource` for details.
 
 ####columnNames
-java.lang.String[]. If `resourc`e is specified, and is a csv, xls, or xlsx resource, this property specifies an array of strings representing column names matching field names in the report template. Optional property. See `net.sf.jasperreports.engine.data.JRCsvDataSource` or `net.sf.jasperreports.engine.data.AbstractXlsDataSourcefor` details.
+`java.lang.String[]`
+
+If `resourc`e is specified, and is a csv, xls, or xlsx resource, this property specifies an array of strings representing column names matching field names in the report template. Optional property. See `net.sf.jasperreports.engine.data.JRCsvDataSource` or `net.sf.jasperreports.engine.data.AbstractXlsDataSourcefor` details.
 
 ####datePattern
 If `resource` is specified, this property specifies the date pattern string value. Optional property. See `net.sf.jasperreports.engine.data.JRAbstractTextDataSource#setDatePattern(java.lang.String)` for details.
@@ -89,7 +91,9 @@ The file path of the generated report. Optional property and defaults to null. W
 This property has higher precedence than `outputStreamInstance` injection.
 
 ####reportParameters
-java.util.Map. Report parameters for generating the report. Optional property and defaults to null. This property can be used to specify string-based key-value pairs as report parameters. For more complex report parameters with object types, use injection into `reportParametersInstance`.
+`java.util.Map`
+
+Report parameters for generating the report. Optional property and defaults to null. This property can be used to specify string-based key-value pairs as report parameters. For more complex report parameters with object types, use injection into `reportParametersInstance`.
 
 This property has higher precedence than `reportParametersInstance` injection.
 
@@ -118,19 +122,20 @@ Optional injection of an implementation of Jasper Reports `net.sf.jasperreports.
 
 Some built-in implementations of `net.sf.jasperreports.export.ExporterOutput`:
 
-* net.sf.jasperreports.engine.export.JRPdfExporter
-* net.sf.jasperreports.engine.export.HtmlExporter
-* net.sf.jasperreports.engine.export.ooxml.JRDocxExporter
-* net.sf.jasperreports.engine.export.ooxml.JRPptxExporter
-* net.sf.jasperreports.engine.export.JRXlsExporter
-* net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter
-* net.sf.jasperreports.engine.export.JRTextExporter
-* net.sf.jasperreports.engine.export.JRRtfExporter
-* net.sf.jasperreports.engine.export.JRXmlExporter
-* net.sf.jasperreports.engine.export.JRCsvExporter
-* net.sf.jasperreports.engine.export.JsonExporter
-* net.sf.jasperreports.engine.export.oasis.JROdsExporter
-* net.sf.jasperreports.engine.export.oasis.JROdtExporter
+* `net.sf.jasperreports.engine.export.JRPdfExporter`
+* `net.sf.jasperreports.engine.export.HtmlExporter`
+* `net.sf.jasperreports.engine.export.ooxml.JRDocxExporter`
+* `net.sf.jasperreports.engine.export.ooxml.JRPptxExporter`
+* `net.sf.jasperreports.engine.export.JRXlsExporter`
+* `net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter`
+* `net.sf.jasperreports.engine.export.JRTextExporter`
+* `net.sf.jasperreports.engine.export.JRRtfExporter`
+* `net.sf.jasperreports.engine.export.JRXmlExporter`
+* `net.sf.jasperreports.engine.export.JRCsvExporter`
+* `net.sf.jasperreports.engine.export.JsonExporter`
+* `net.sf.jasperreports.engine.export.oasis.JROdsExporter`
+* `net.sf.jasperreports.engine.export.oasis.JROdtExporter`
+
 
 
 
