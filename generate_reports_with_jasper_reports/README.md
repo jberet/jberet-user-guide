@@ -36,6 +36,14 @@ The following is an example how to reference and configure `jasperReportsBatchle
 ```
 
 ##Batch Configuration Properties
+Configuration of `jasperReportsBatchlet` is done through either batch properties in job xml and `@BatchProperty` injections, or through CDI injections of objects created and configured by other parts of the application. Batch properties generally have higher precedence than CDI-injected counterparts.
+
+The Jasper Reports data source is configured through either `resource` property, or `jrDataSourceInstance` injection. Directly passing a `java.sql.Connection` instance to this class is not supported. For JDBC data source, The application should instead inject `net.sf.jasperreports.engine.JRResultSetDataSource` into `jrDataSourceInstance`.
+
+Report can be saved to a file, or directed to a `java.io.OutputStream`.
+
+This class supports all output report formats implemented in Jasper Reports. If `exporterInstance` field is injected with an instance of `net.sf.jasperreports.export.Exporter`, it will be used to export and generate the final report. Otherwise, if `outputType` batch property is set to `pdf`, `html`, or `jrprint`, a PDF, HTML or Jasper jrprint report is generated respectively.
+
 `jasperReportsBatchlet` can have the following batch properties in job xml.  All properties are of type java.lang.String, unless otherwise noted.
 ####resource
 The resource that provides the data source for generating report. Optional property, and defaults to null. If specified, it may be a URL, a file path, or any resource path that can be loaded by the current application class loader. If this property is not specified, the application should inject appropriate `JRDataSource` into `jrDataSourceInstance`. If neither `resource` nor `jrDataSourceInstance` is specified, an `net.sf.jasperreports.engine.JREmptyDataSource` is used.
