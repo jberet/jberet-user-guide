@@ -171,7 +171,7 @@ The following `resultSetProperties` can be optionally configured in job xml:
     + HOLD_CURSORS_OVER_COMMIT (default)
     + CLOSE_CURSORS_AT_COMMIT
 
-For example:
+See [`java.sql.ResultSet` javadoc](http://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html) for detailed explanation of these properties. For example:
 
     <property name="resultSetProperties" 
               value="fetchSize=1000, resultSetConcurrency=CONCUR_UPDATABLE"/>

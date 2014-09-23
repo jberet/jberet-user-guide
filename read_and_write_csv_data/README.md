@@ -11,6 +11,8 @@ jberet-support module contains `CsvItemReader` and `CsvItemWriter` that reads an
 
 jberet-support delegates most of the CSV data read, write and processing to [supercsv](http://supercsv.sourceforge.net/), and therefore the configuration of `csvItemReader` and `csvItemWriter` mirrors that of supercsv.
 
+Another option for dealing with CSV data is to use write batch reader, processor or writer in script languages, which may have built-in support or libraries for CSV data format. For more details, refer to chapter Develop Batch Artifacts in Script Languages.
+
 ##Configure `csvItemReader` and `csvItemWriter` in job xml
 The following is a sample job xml that references `csvItemReader` and `csvItemWriter` to read and write CSV data. Each batch property will be explained in the next section. Javadoc of [CsvItemReader](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/CsvItemReader.html) and [CsvItemWriter](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/BeanIOItemWriter.html) also contains details for each batch configuration property.
 ```xml
