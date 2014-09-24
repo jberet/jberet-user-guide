@@ -1,17 +1,17 @@
 # Develop Batch Artifacts in Script Languages
 Whether it's for data ETL or quick testing, script language offers a valuable alternative to Java in developing batch applications. JBeret supports writing `Batchlet`, `ItemReader`, `ItemProcessor` and `ItemWriter` in popular script languages. A job xml may reference an external script resource, or directly include script as CDATA or PCDATA.
 
-JBeret relies on JSR-223 Scripting for the Java Platform (available in Java SE) standard API to run script batch artifacts. Each script language used by a batch application requires its JSR-223-compliant script engine as runtime dependency. The following table lists some common script languages and script engines:
+JBeret relies on JSR-223 Scripting for the Java&trade; Platform (available in Java SE) standard API to run script batch artifacts. Each script language used by a batch application requires its JSR-223-compliant script engine as runtime dependency. The following table lists some common script languages and script engines:
 
 | Script Language | Script Engine | Obtain from | Impl javax.script.Invocable?| Suitable for |
 | -- | -- | -- | -- | -- |
-| JavaScript | Mozilla Rhino | included in Oracle JDK 5, 6 & 7 | Yes | reader, processor, writer & batchlet |
-| JavaScript | Oracle Nashorn | included in Oracle JDK 8 | Yes | reader, processor, writer & batchlet |
-| Groovy | org.codehaus.groovy:groovy-jsr223 | Maven Central | Yes | reader, processor, writer & batchlet |
-| Jython / Python | org.python:jython | Maven Central | Yes | reader, processor, writer & batchlet |
-| JRuby / Ruby | org.jruby:jruby | Maven Central | Yes | reader, processor, writer & batchlet |
-| Scala | org.scala-lang:scala-compiler | Maven Central | No | processor & batchlet |
-| PHP | com.caucho:resin-quercus | caucho-repository http://caucho.com/m2/ | No | processor & batchlet |
+| JavaScript | Mozilla Rhino | included in Oracle JDK 5, 6 & 7 | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
+| JavaScript | Oracle Nashorn | included in Oracle JDK 8 | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
+| Groovy | org.codehaus.groovy:groovy-jsr223 | Maven Central | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
+| Jython / Python | org.python:jython | Maven Central | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
+| JRuby / Ruby | org.jruby:jruby | Maven Central | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
+| Scala | org.scala-lang:scala-compiler | Maven Central | <span style="color:red">No</span> | processor & batchlet |
+| PHP | com.caucho:resin-quercus | caucho-repository http://caucho.com/m2/ | <span style="color:red">No</span> | processor & batchlet |
 
 The following XML snippet includes all the above script engine dependencies. A batch application should only include what is really needed at runtime.
 

@@ -141,56 +141,56 @@ public class MyBatchlet extends AbstractBatchlet {
 ## Batch Property Injection with @BatchProperty
 A batch artifact class can contain fields annotated with `@Inject` and `@BatchProperty` to inject properties defined in job xml into these fields.  The injection field can be any of the following java types:
 
-* java.lang.String
-* java.lang.StringBuilder
-* java.lang.StringBuffer
+* `java.lang.String`
+* `java.lang.StringBuilder`
+* `java.lang.StringBuffer`
 * any primitive type, and its wrapper type:
-    * boolean, Boolean
-    * int, Integer
-    * double, Double
-    * long, Long
-    * char, Character
-    * float, Float
-    * short, Short
-    * byte, Byte
-* java.math.BigInteger
-* java.math.BigDecimal
-* java.net.URL
-* java.net.URI
-* java.io.File
-* java.util.jar.JarFile
-* java.util.Date
-* java.lang.Class
-* java.net.Inet4Address
-* java.net.Inet6Address
-* java.util.List, List<?>, List<String>
-* java.util.Set, Set<?>, Set<String>
-* java.util.Map, Map<?, ?>, Map<String, String>, Map<String, ?>
-* java.util.logging.Logger
-* java.util.regex.Pattern
-* javax.management.ObjectName
+    * `boolean, Boolean`
+    * `int, Integer`
+    * `double, Double`
+    * `long, Long`
+    * `char, Character`
+    * `float, Float`
+    * `short, Short`
+    * `byte, Byte`
+* `java.math.BigInteger`
+* `java.math.BigDecimal`
+* `java.net.URL`
+* `java.net.URI`
+* `java.io.File`
+* `java.util.jar.JarFile`
+* `java.util.Date`
+* `java.lang.Class`
+* `java.net.Inet4Address`
+* `java.net.Inet6Address`
+* `java.util.List, List<?>, List<String>`
+* `java.util.Set, Set<?>, Set<String>`
+* `java.util.Map, Map<?, ?>, Map<String, String>, Map<String, ?>`
+* `java.util.logging.Logger`
+* `java.util.regex.Pattern`
+* `javax.management.ObjectName`
 
 The following array types are also supported:
 
-* java.lang.String[]
+* `java.lang.String[]`
 * any primitive type, and its wrapper type:
-    * boolean[], Boolean[]
-    * int[], Integer[]
-    * double[], Double[]
-    * long[], Long[]
-    * char[], Character[]
-    * float[], Float[]
-    * short[], Short[]
-    * byte[], Byte[]
-* java.math.BigInteger[]
-* java.math.BigDecimal[]
-* java.net.URL[]
-* java.net.URI[]
-* java.io.File[]
-* java.util.jar.JarFile[]
-* java.util.zip.ZipFile[]
-* java.util.Date[]
-* java.lang.Class[]
+    * `boolean[], Boolean[]`
+    * `int[], Integer[]`
+    * `double[], Double[]`
+    * `long[], Long[]`
+    * `char[], Character[]`
+    * `float[], Float[]`
+    * `short[], Short[]`
+    * `byte[], Byte[]`
+* `java.math.BigInteger[]`
+* `java.math.BigDecimal[]`
+* `java.net.URL[]`
+* `java.net.URI[]`
+* `java.io.File[]`
+* `java.util.jar.JarFile[]`
+* `java.util.zip.ZipFile[]`
+* `java.util.Date[]`
+* `java.lang.Class[]`
 
 The following example injects a number into the batchlet class as various suitable types:
 

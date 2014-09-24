@@ -4,12 +4,12 @@ jberet-support module contains `JdbcItemReader` and `JdbcItemWriter` that reads 
 `jdbcItemReader` can read a row of data into one of three types, configured through `beanType` batch property:
 * `java.util.List`: populated with column value in the order as returned by the query result set
 * `java.util.Map`: with column name as the key
-* any custom POJO, e.g., StockTrade, Person, Employee, etc
+* any custom POJO, e.g., `StockTrade`, `Person`, `Employee`, etc
  
 Likewise, `jdbcItemWriter` can obtain data from one of three types for database insertion, configured through `beanType` batch property:
 * `java.util.List`: used to populate the insert statement
 * `java.util.Map`: used to set parameter values of the insert statement with map key as the parameter name
-* any custom POJO, e.g., StockTrade, Person, Employee, etc
+* any custom POJO, e.g., `StockTrade`, `Person`, `Employee`, etc
 
 When `beanType` is configured to a custom POJO bean in `jdbcItemReader` and `jdbcItemWriter`, they use jackson-databind library to perform transformation between `java.util.Map` and POJO bean. So in this case, the following jackson dependencies are needed at runtime:
 
