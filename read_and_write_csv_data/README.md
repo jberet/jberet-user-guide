@@ -63,11 +63,6 @@ The following is a sample job xml that references `csvItemReader` and `csvItemWr
 ###resource
 The resource to read from (for batch readers), or write to (for batch writers).
 
-###skipBeanValidation
-`boolean`
-
-Indicates whether the current batch reader will invoke Bean Validation API to validate the incoming data POJO.  Optional property and defaults to false, i.e., the reader will validate data POJO bean where appropriate.
-
 ###nameMapping
 `java.lang.String[]`
 
@@ -96,8 +91,13 @@ Indicates whether the current batch reader will invoke Bean Validation API to va
 The name of the character set to be used for reading and writing data, e.g., UTF-8. This property is optional, and if not set, the platform default charset is used.
 
 
-##Batch Configuration Properties for `csvItemReader`
+##Batch Configuration Properties for `csvItemReader` Only
 In addition to the common properties listed above, `csvItemReader` also supports the following batch properties:
+
+###skipBeanValidation
+`boolean`
+
+Indicates whether the current batch reader will invoke Bean Validation API to validate the incoming data POJO.  Optional property and defaults to false, i.e., the reader will validate data POJO bean where appropriate.
 
 ###start
 `int`
@@ -109,7 +109,7 @@ In addition to the common properties listed above, `csvItemReader` also supports
 `boolean`
 
 
-##Batch Configuration Properties for `csvItemWriter`
+##Batch Configuration Properties for `csvItemWriter` Only
 In addition to the common properties listed above, `csvItemWriter` also supports the following batch properties:
 
 ###header

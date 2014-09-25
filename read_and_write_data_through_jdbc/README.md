@@ -106,13 +106,14 @@ Password for the JDBC connection
 
 Additional properties for the JDBC connection
 
+
+##Batch Configuration Properties for `jdbcItemReader` Only
+In addition to the common batch properties listed above, `jdbcItemReader` may also be configured through the following batch properties:
+
 ###skipBeanValidation
 `boolean`
 
 Indicates whether the current batch reader will invoke Bean Validation API to validate the incoming data POJO.  Optional property and defaults to false, i.e., the reader will validate data POJO bean where appropriate.
-
-##Batch Configuration Properties for `jdbcItemReader`
-In addition to the common batch properties listed above, `jdbcItemReader` may also be configured through the following batch properties:
 
 ###start
 `int`
@@ -176,7 +177,7 @@ See [`java.sql.ResultSet` javadoc](http://docs.oracle.com/javase/7/docs/api/java
     <property name="resultSetProperties" 
               value="fetchSize=1000, resultSetConcurrency=CONCUR_UPDATABLE"/>
               
-##Batch Configuration Properties for `jdbcItemWriter`
+##Batch Configuration Properties for `jdbcItemWriter` Only
 In addition to the common batch properties listed above, `jdbcItemWriter` may also be configured through the following batch properties:
 
 ###parameterNames
@@ -208,7 +209,7 @@ Tells this class which `PreparedStatement` setter method to call to set insert s
 And this class will call `PreparedStatement.setString(int, String)`, `PreparedStatement.setString(int, String)`, and `PreparedStatement.setInt(int, int)`.
 
 ##Batch Configuration Properties for jackson-databind library
-When `jdbcItemReader` or `jdbcItemWriter` uses custom POJO bean as `beanType`, jackson-databind performs data transformation behind the scene, and this step can be configured through the following batch configuration properties in job xml, though the defaults should suffice in most cases:
+When `jdbcItemReader` or `jdbcItemWriter` uses custom POJO bean as `beanType`, `jackson-databind` performs data transformation behind the scene, and this step can be configured through the following batch configuration properties in job xml, though the defaults should suffice in most cases:
 
 ###jsonFactoryFeatures
 
