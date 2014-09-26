@@ -29,8 +29,8 @@ a zip file containing the following content, and provides a good start to write 
 ### jberet-support
 contains built-in batch artifacts (e.g., `ItemReader`, `ItemWriter`, `Batchlet` classes) for handling common data types. This library can be optionally referenced by batch applications to simplify development. The application should make sure to satisfy appropriate transitive dependencies originating from jberet-support, depending on its usage. See [JBeret javadocs](http://docs.jboss.org/jberet/) for details.
 
-###Batch application dependencies
-####Minimal application dependencies:
+##Batch application dependencies
+###Minimal application dependencies:
 ```xml
 <dependency>
     <groupId>org.jboss.spec.javax.batch</groupId>
@@ -73,7 +73,7 @@ A note on webapp or Java EE application packaging: Java EE API jars (batch-api, 
 are already available in the appserver, and should not be included in WAR, JAR, or EAR files. Their maven dependency
 scope should be set to `provided`.
 
-####Additional dependencies for Java SE batch applications
+###Additional dependencies for Java SE batch applications
 h2 can be omitted when using in-memory batch job repository:
 ```xml
 <dependency>
@@ -89,7 +89,7 @@ h2 can be omitted when using in-memory batch job repository:
     <artifactId>h2</artifactId>
 </dependency>
 ```
-####Optional application dependencies:
+###Optional application dependencies:
 ```xml
 <!-- any JDBC driver jars  when using jdbc batch job repository -->
 <dependency>

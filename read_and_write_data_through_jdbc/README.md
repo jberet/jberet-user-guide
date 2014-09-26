@@ -1,5 +1,5 @@
 # Read and Write Data through JDBC
-jberet-support module contains `JdbcItemReader` and `JdbcItemWriter` that reads from and write to database through JDBC. Batch applications can reference them by name `jdbcItemReader` and `jdbcItemWriter` in job xml. 
+jberet-support module contains `jdbcItemReader` and `jdbcItemWriter` that reads from and write to database through JDBC. Batch applications can reference them by name `jdbcItemReader` and `jdbcItemWriter` in job xml. 
 
 `jdbcItemReader` can read a row of data into one of three types, configured through `beanType` batch property:
 * `java.util.List`: populated with column value in the order as returned by the query result set
@@ -28,6 +28,14 @@ When `beanType` is configured to a custom POJO bean in `jdbcItemReader` and `jdb
 <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>
     <artifactId>jackson-annotations</artifactId>
+    <version>${version.com.fasterxml.jackson}</version>
+</dependency>
+
+<!-- POJO beans may contain either jackson annotations, or JAXB annotations -->
+<!-- Include this dependency if JAXB annotation introspector is needed -->
+<dependency>
+    <groupId>com.fasterxml.jackson.module</groupId>
+    <artifactId>jackson-module-jaxb-annotations</artifactId>
     <version>${version.com.fasterxml.jackson}</version>
 </dependency>
 ```
@@ -118,12 +126,12 @@ Indicates whether the current batch reader will invoke Bean Validation API to va
 ###start
 `int`
 
-The row number in the ResultSet to start reading. It's a positive integer starting from 1.
+The row number in the `ResultSet` to start reading. It's a positive integer starting from 1.
 
 ###end
 `int`
 
-The row number in the ResultSet to end reading (inclusive). It's a positive integer starting from 1.
+The row number in the `ResultSet` to end reading (inclusive). It's a positive integer starting from 1.
 
 ###columnMapping
 `java.lang.String[]`
@@ -156,21 +164,21 @@ And this class will call `ResultSet.getString(java.lang.String)`, `ResultSet.get
 
 The following `resultSetProperties` can be optionally configured in job xml:
 
-* fetchSize (use driver default)
-* fetchDirection
-    + FETCH_FORWARD (default)
-    + FETCH_REVERSE
-    + FETCH_UNKNOWN
-* resultSetType:
-    + TYPE_FORWARD_ONLY (default)
-    + TYPE_SCROLL_INSENSITIVE
-    + TYPE_SCROLL_SENSITIVE
-* resultSetConcurrency:
-    + CONCUR_READ_ONLY (default)
-    + CONCUR_UPDATABLE
-* resultSetHoldability:
-    + HOLD_CURSORS_OVER_COMMIT (default)
-    + CLOSE_CURSORS_AT_COMMIT
+* `fetchSize` (use driver default)
+* `fetchDirection`
+    + `FETCH_FORWARD` (default)
+    + `FETCH_REVERSE`
+    + `FETCH_UNKNOWN`
+* `resultSetType`:
+    + `TYPE_FORWARD_ONLY` (default)
+    + `TYPE_SCROLL_INSENSITIVE`
+    + `TYPE_SCROLL_SENSITIVE`
+* `resultSetConcurrency`:
+    + `CONCUR_READ_ONLY` (default)
+    + `CONCUR_UPDATABLE`
+* `resultSetHoldability`:
+    + `HOLD_CURSORS_OVER_COMMIT` (default)
+    + `CLOSE_CURSORS_AT_COMMIT`
 
 See [`java.sql.ResultSet` javadoc](http://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html) for detailed explanation of these properties. For example:
 

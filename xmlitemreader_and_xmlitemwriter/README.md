@@ -26,6 +26,14 @@ jberet-support module includes `xmlItemReader` and `xmlItemWriter` to handle XML
     <artifactId>jackson-dataformat-xml</artifactId>
     <version>${version.com.fasterxml.jackson}</version>
 </dependency>
+
+<!-- POJO beans may contain either jackson annotations, or JAXB annotations -->
+<!-- Include this dependency if JAXB annotation introspector is needed -->
+<dependency>
+    <groupId>com.fasterxml.jackson.module</groupId>
+    <artifactId>jackson-module-jaxb-annotations</artifactId>
+    <version>${version.com.fasterxml.jackson}</version>
+</dependency>
 ```
 
 ##Batch Configuration Properties in Job XML
