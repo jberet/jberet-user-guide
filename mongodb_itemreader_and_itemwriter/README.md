@@ -49,7 +49,7 @@ The following dependencies are required for `mongoItemReader` and `mongoItemWrit
 </dependency>
 ```
 
-##Configure `mongoItemReader` and `mongoItemWriter in Job XML
+##Configure `mongoItemReader` and `mongoItemWriter` in Job XML
 `mongoItemReader` and `mongoItemWriter` are configured through `<reader>` or `<writer>` batch properties in job xml. All properties are of type `String`, unless noted otherwise. The following is an example job xml that references `mongoItemReader` and `mongoItemWriter`:
 
 ```xml
@@ -83,9 +83,6 @@ The following dependencies are required for `mongoItemReader` and `mongoItemWrit
 ```
 
 ###Batch Properties for Both `mongoItemReader` and `mongoItemWriter`
-####resource
-
-The resource to read from (for batch readers), or write to (for batch writers).
 
 ####beanType
 `java.lang.Class`

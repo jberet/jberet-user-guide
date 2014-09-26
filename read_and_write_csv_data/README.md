@@ -1,5 +1,7 @@
 #Read and Write CSV Data
-jberet-support module contains `CsvItemReader` and `CsvItemWriter` that reads and writes CSV (Comma-Separated Values) resources respectively. Batch applications can reference them by name `csvItemReader` and `csvItemWriter` in job xml. They can also be configured to handle data with other delimiters such as tab, vertical bar, etc.  The following dependency is required by `CsvItemReader` and `CsvItemWriter`:
+jberet-support module contains `csvItemReader` and `csvItemWriter` that reads and writes CSV (Comma-Separated Values) resources respectively. Batch applications can reference them by name `csvItemReader` and `csvItemWriter` in job xml. They can also be configured to handle data with other delimiters such as tab, vertical bar, etc. For fixed-length flat file, see Chapter BeanIO ItemReader and ItemWriter.
+
+The following dependency is required by `csvItemReader` and `csvItemWriter`:
 
 ```xml
 <dependency>
@@ -11,7 +13,9 @@ jberet-support module contains `CsvItemReader` and `CsvItemWriter` that reads an
 
 jberet-support delegates most of the CSV data read, write and processing to [supercsv](http://supercsv.sourceforge.net/), and therefore the configuration of `csvItemReader` and `csvItemWriter` mirrors that of supercsv.
 
-Another option for dealing with CSV data is to use write batch reader, processor or writer in script languages, which may have built-in support or libraries for CSV data format. For more details, refer to chapter Develop Batch Artifacts in Script Languages.
+Other options for dealing with CSV data:
+* write batch reader, processor or writer in script languages, which may have built-in support or libraries for CSV data format. For more details, refer to chapter Develop Batch Artifacts in Script Languages.
+* use `beanIOItemReader` and `beanIOItemWriter`, which handles common data formats such as CSV, XML, JSON. See Chapter BeanIO ItemReader and ItemWriter for details.
 
 ##Configure `csvItemReader` and `csvItemWriter` in job xml
 The following is a sample job xml that references `csvItemReader` and `csvItemWriter` to read and write CSV data. Each batch property will be explained in the next section. Javadoc of [CsvItemReader](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/CsvItemReader.html) and [CsvItemWriter](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/BeanIOItemWriter.html) also contains details for each batch configuration property.
