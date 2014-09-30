@@ -8,6 +8,7 @@ jberet-support module includes `jmsItemReader` and `jmsItemWriter` to handle JMS
 <dependency>
     <groupId>org.jboss.spec.javax.jms</groupId>
     <artifactId>jboss-jms-api_2.0_spec</artifactId>
+    <scope>compile</scope>
 </dependency>
 
 <!-- HornetQ client-side dependencies, if HornetQ is used as the MQ provider -->
@@ -125,7 +126,14 @@ This field holds an optional injection of `javax.jms.Destination`. When `destina
 This field holds an optional injection of `javax.jms.ConnectionFactory`. When `connectionFactoryLookupName` property is specified in job xml, this field is ignored and `connectionFactoryLookupName` is used to look up JMS `ConnectionFactory`. The application may implement a `javax.enterprise.inject.Produces` method to satisfy this dependency injection.
 
 
-###Batch Properties for `jmsItemReader`
+###Batch Properties for `jmsItemReader` Only
+In addition to the above common properties, `jmsItemReader` also supports the following batch properties in job xml:
+
+####skipBeanValidation
+`boolean`
+
+Indicates whether the current batch reader will invoke Bean Validation API to validate the incoming data POJO. Optional property and defaults to `false`, i.e., the reader will validate data POJO bean where appropriate.
+
 ####receiveTimeout
 `long`
 The number of milliseconds a JMS `MessageConsumer` blocks until a message arrives. Optional property, and defaults to `0`, which means it blocks indefinitely.
@@ -142,7 +150,7 @@ The fully-qualified class name of the data item to be returned from `readItem()`
 
 When this property is not specified, `readItem()` method returns an object whose actual type is determined by the incoming JMS message type.
 
-###Batch Properties for `jmsItemWriter`
+###Batch Properties for `jmsItemWriter` Only
 None
 
 
