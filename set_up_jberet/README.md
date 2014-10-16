@@ -240,6 +240,84 @@ db-properties =
 # db-password = masterkey
 ```
 
+####JDBC Job Repository Database Schema
+JDBC job repository consists of 4 tables:
+* `JOB_INSTANCE`
+* `JOB_EXECUTION`
+* `STEP_EXECUTION`
+* `PARTITION_EXECUTION`
+
+![](job-repository-tables-diagram.png)
+
+If a custom DDL file is needed, it should define the same tables, and separate each table definition with "!!". The following is the default `jberet.ddl` included in `jberet-core` module:
+
+```sql
+/*
+ Default DDL file, using h2 database for job repository.
+ */
+
+CREATE TABLE IF NOT EXISTS JOB_INSTANCE
+(
+  JOBINSTANCEID   IDENTITY PRIMARY KEY NOT NULL,
+  VERSION         INTEGER,
+  JOBNAME         VARCHAR(512),
+  APPLICATIONNAME VARCHAR(512)
+)!!
+CREATE TABLE IF NOT EXISTS JOB_EXECUTION
+(
+  JOBEXECUTIONID  IDENTITY PRIMARY KEY NOT NULL,
+  JOBINSTANCEID   BIGINT             NOT NULL,
+  VERSION         INTEGER,
+  CREATETIME      TIMESTAMP,
+  STARTTIME       TIMESTAMP,
+  ENDTIME         TIMESTAMP,
+  LASTUPDATEDTIME TIMESTAMP,
+  BATCHSTATUS     VARCHAR(30),
+  EXITSTATUS      VARCHAR(512),
+  JOBPARAMETERS   VARCHAR(3000),
+  RESTARTPOSITION VARCHAR(255),
+  FOREIGN KEY (JOBINSTANCEID) REFERENCES JOB_INSTANCE (JOBINSTANCEID)
+)!!
+CREATE TABLE IF NOT EXISTS STEP_EXECUTION
+(
+  STEPEXECUTIONID    IDENTITY PRIMARY KEY NOT NULL,
+  JOBEXECUTIONID     BIGINT             NOT NULL,
+  VERSION            INTEGER,
+  STEPNAME           VARCHAR(255),
+  STARTTIME          TIMESTAMP,
+  ENDTIME            TIMESTAMP,
+  BATCHSTATUS        VARCHAR(30),
+  EXITSTATUS         VARCHAR(512),
+  EXECUTIONEXCEPTION VARCHAR(2048),
+  PERSISTENTUSERDATA BLOB,
+  READCOUNT          INTEGER,
+  WRITECOUNT         INTEGER,
+  COMMITCOUNT        INTEGER,
+  ROLLBACKCOUNT      INTEGER,
+  READSKIPCOUNT      INTEGER,
+  PROCESSSKIPCOUNT   INTEGER,
+  FILTERCOUNT        INTEGER,
+  WRITESKIPCOUNT     INTEGER,
+  READERCHECKPOINTINFO  BLOB,
+  WRITERCHECKPOINTINFO  BLOB,
+  FOREIGN KEY (JOBEXECUTIONID) REFERENCES JOB_EXECUTION (JOBEXECUTIONID)
+)!!
+CREATE TABLE IF NOT EXISTS PARTITION_EXECUTION
+(
+  PARTITIONEXECUTIONID  INTEGER NOT NULL,
+  STEPEXECUTIONID       BIGINT  NOT NULL,
+  VERSION               INTEGER,
+  BATCHSTATUS           VARCHAR(30),
+  EXITSTATUS            VARCHAR(512),
+  EXECUTIONEXCEPTION    VARCHAR(2048),
+  PERSISTENTUSERDATA    BLOB,
+  READERCHECKPOINTINFO  BLOB,
+  WRITERCHECKPOINTINFO  BLOB,
+  PRIMARY KEY (PARTITIONEXECUTIONID, STEPEXECUTIONID),
+  FOREIGN KEY (STEPEXECUTIONID) REFERENCES STEP_EXECUTION (STEPEXECUTIONID)
+)!!
+```
+
 ####Configure JBeret Thread Pool in Java SE
 JBeret invokes `java.util.concurrent` API to concurrently execute jobs and job elements such as steps, flows, and splits. `jberet.properties` contains various properties for modifying JBeret execution concurrency. The following is snippet from `jberet.properties` that demonstrate the use of concurrency-related properties:
 
