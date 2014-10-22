@@ -72,6 +72,7 @@ The resource to read from (for batch readers), or write to (for batch writers).
 
 ####xmlFactoryLookup
 
+JNDI lookup name for `com.fasterxml.jackson.dataformat.xml.XmlFactory`, which is used for constructing `com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser` in `xmlItemReader` and `com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator` in `xmlItemWriter`. See class [org.jberet.support.io.XmlFactoryObjectFactory](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/XmlFactoryObjectFactory.html) for more details.
 
 ###Batch Properties for `xmlItemReader` Only
 In addition to the above common properties, `xmlItemReader` also supports the following batch properties in job xml:
@@ -84,35 +85,56 @@ Indicates whether the current batch reader will invoke Bean Validation API to va
 ####beanType
 `java.lang.Class`
 
+The bean class that represents individual data item in the `resource` XML, and the `readItem()` method reads one item at a time and binds it to the provided bean type. Required property. For example,
+
+* `org.jberet.support.io.StockTrade`
+* `org.jberet.support.io.Person`
+* `my.own.custom.ItemBean`
+
+
 ####start
 `int`
+
+Specifies the start position (a positive integer starting from `1`) to read the data. If reading from the beginning of the input XML, there is no need to specify this property.
 
 ####end
 `int`
 
+Specify the end position in the data set (inclusive). Optional property, and defaults to `Integer.MAX_VALUE`. If reading till the end of the input XML, there is no need to specify this property.
+
 ####inputDecorator
 `java.lang.Class`
 
-####xmlTextElementName
+Fully-qualified class name of `com.fasterxml.jackson.core.io.InputDecorator`, which can be used to decorate input sources. Optional property, and defaults to `null`. See `com.fasterxml.jackson.core.io.InputDecorator`, and  `com.fasterxml.jackson.core.JsonFactory#setInputDecorator(com.fasterxml.jackson.core.io.InputDecorator)` for more details.
 
+####xmlTextElementName
+Alternate "virtual name" to use for XML CDATA segments; that is, text values. Optional property and defaults to `null` (empty String, "", is used as the virtual name). See `com.fasterxml.jackson.dataformat.xml.JacksonXmlModule#setXMLTextElementName(java.lang.String)` for more details.
 
 ###Batch Properties for `xmlItemWriter` Only
 In addition to the above common properties, `xmlItemWriter` also supports the following batch properties in job xml:
 
 ####writeMode
+Instructs this class, when the target XML resource already exists, whether to append to, or overwrite the existing resource, or fail. Valid values are `"append"`, `"overwrite"`, and `"failIfExists"`. Optional property, and defaults to append.
 
 ####defaultUseWrapper
+Whether use wrapper for indexed (List, array) properties or not, if there are no explicit annotations. Optional property, valid values are `"true"` and `"false"`, and defaults to `"true"`. See `com.fasterxml.jackson.dataformat.xml.JacksonXmlModule#setDefaultUseWrapper(boolean)`, and  ` com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper` for more details.
 
 ####rootElementName
+Local name of the output XML root element. Required property. See `javax.xml.stream.XMLStreamWriter#writeStartElement` for more details.
 
 ####rootElementPrefix
+The prefix of the XML root element tag. Optional property and defaults to `null`. See `javax.xml.stream.XMLStreamWriter#writeStartElement(java.lang.String, java.lang.String, java.lang.String)` for more details.
 
 ####rootElementNamespaceURI
+The namespaceURI of the prefix to use. Optional property and defaults to `null`. See `javax.xml.stream.XMLStreamWriter#writeStartElement(java.lang.String, java.lang.String, java.lang.String)`, and `javax.xml.stream.XMLStreamWriter#writeStartElement(java.lang.String, java.lang.String)` for more details.
 
 ####prettyPrinter
 `java.lang.Class`
 
+The fully-qualified class name of `com.fasterxml.jackson.core.PrettyPrinter`, which implements pretty printer functionality, such as indentation. Optional property and defaults to `null` (default pretty printer is used). See `com.fasterxml.jackson.core.PrettyPrinter`, and `com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator#setPrettyPrinter(com.fasterxml.jackson.core.PrettyPrinter)` for more details.
+
 ####outputDecorator
 `java.lang.Class`
 
+The fully-qualified class name of `com.fasterxml.jackson.core.io.OutputDecorator`, which can be used to decorate output destinations. Optional property and defaults to null. See `com.fasterxml.jackson.core.io.OutputDecorator`, and `com.fasterxml.jackson.core.JsonFactory#setOutputDecorator(com.fasterxml.jackson.core.io.OutputDecorator)` for more details.
 
