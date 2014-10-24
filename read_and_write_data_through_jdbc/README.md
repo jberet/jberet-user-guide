@@ -219,17 +219,12 @@ And this class will call `PreparedStatement.setString(int, String)`, `PreparedSt
 ##Batch Configuration Properties for jackson-databind library
 When `jdbcItemReader` or `jdbcItemWriter` uses custom POJO bean as `beanType`, `jackson-databind` performs data transformation behind the scene, and this step can be configured through the following batch configuration properties in job xml, though the defaults should suffice in most cases:
 
-###jsonFactoryFeatures
-
-###mapperFeatures
-
-###jsonFactoryLookup
-
-###serializationFeatures
-
-###customSerializers
-
-###deserializationFeatures
-
-###customDeserializers
-
+* `jsonFactoryFeatures`
+* `mapperFeatures`
+* `jsonFactoryLookup`
+* `serializationFeatures`
+* `customSerializers`
+* `deserializationFeatures`
+* `customDeserializers`
+ 
+See Chapter JsonItemReader and JsonItemWriter for more details.

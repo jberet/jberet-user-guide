@@ -227,19 +227,15 @@ The optional name of the target sheet. When specified for a reader, it has highe
 ####additional jackson-related batch properties
 All Excel readers and writers use `jackson-databind` for data transformation behind the scene, and this step can be configured through the following batch configuration properties in job xml, though the defaults should suffice in most cases:
 
-#####jsonFactoryFeatures
-
-#####mapperFeatures
-
-#####jsonFactoryLookup
-
-#####serializationFeatures
-
-#####customSerializers
-
-#####deserializationFeatures
-
-#####customDeserializers
+* `jsonFactoryFeatures`
+* `mapperFeatures`
+* `jsonFactoryLookup`
+* `serializationFeatures`
+* `customSerializers`
+* `deserializationFeatures`
+* `customDeserializers`
+ 
+See Chapter JsonItemReader and JsonItemWriter for more details.
 
 -----------------
 
