@@ -70,7 +70,9 @@ The resource to read from (for batch readers), or write to (for batch writers).
 ###nameMapping
 `java.lang.String[]`
 
-Specify the bean fields or map keys corresponding to CSV columns. If the CSV columns exactly match bean fields or map keys, then no need to specify this property.
+Specify the bean fields or map keys corresponding to CSV columns in the same order. Not used if `beanType` property is set to `java.util.List`. If the CSV column names exactly match bean fields or map keys, then no need to specify this property. If the CSV column names are missing or differ from bean fields or map keys, then this property is required. An example of `nameMapping` value:
+
+`"number, gender, title, givenName, middleInitial, surname"`
 
 ###beanType
 `java.lang.Class`
@@ -110,10 +112,28 @@ Specifies a CommentMatcher for reading CSV resource. The CommentMatcher determin
 * `"my.own.CommentMatcherImpl"`
 
 ###encoder
-Specifies a custom encoder when writing CSV. See the section on custom encoders below. See [CSV Preferences](http://supercsv.sourceforge.net/preferences.html).
+Specifies a custom encoder when writing CSV. For example,
+* `default`
+* `select 1, 2, 3`
+* `select true, true, false`
+* `column 1, 2, 3`
+* `column true, true, false`
+* `my.own.MyCsvEncoder`
+    
+See [CSV Preferences](http://supercsv.sourceforge.net/preferences.html).
 
 ###quoteMode
-Allows you to enable surrounding quotes for writing (if a column wouldn't normally be quoted because it doesn't contain special characters). See the section on quote modes below. See [CSV Preferences](http://supercsv.sourceforge.net/preferences.html).
+Allows you to enable surrounding quotes for writing (if a column wouldn't normally be quoted because it doesn't contain special characters). For example,
+
+* `default`
+* `always`
+* `select 1, 2, 3`
+* `select true, true, false`
+* `column 1, 2, 3`
+* `column true, true, false`
+* `my.own.MyQuoteMode`
+
+See [CSV Preferences](http://supercsv.sourceforge.net/preferences.html).
 
 ###cellProcessors
 Specifies a list of cell processors, one for each column. See [Super CSV docs](http://supercsv.sourceforge.net/cell_processors.html) for supported cell processor types. The rules and syntax are as follows:
