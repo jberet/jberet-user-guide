@@ -95,11 +95,36 @@ h2 can be omitted when using in-memory batch job repository:
 ```
 ###Optional application dependencies:
 ```xml
-<!-- any JDBC driver jars  when using jdbc batch job repository -->
+<!-- any JDBC driver jars, e.g, h2, when using jdbc batch job repository -->
 <dependency>
     <groupId>com.h2database</groupId>
     <artifactId>h2</artifactId>
 </dependency>
+
+<!-- infinispan and jgroups jars, when infinispan job repository is
+used. Additional infinispan cachestore jars (e.g.,
+infinispan-cachestore-jdbc, infinispan-cachestore-mongodb,
+infinispan-cachestore-leveldb, infinispan-cachestore-rest,
+infinispan-cachestore-cassandra, etc) may be needed if such a
+cachestore is used. -->
+ <dependency>
+     <groupId>org.infinispan</groupId>
+     <artifactId>infinispan-core</artifactId>
+ </dependency>
+ <dependency>
+     <groupId>org.infinispan</groupId>
+     <artifactId>infinispan-commons</artifactId>
+ </dependency>
+ <dependency>
+     <groupId>org.jgroups</groupId>
+     <artifactId>jgroups</artifactId>
+ </dependency>
+
+ <!-- MongoDB jars, when MongoDB job repository is used -->
+ <dependency>
+     <groupId>org.mongodb</groupId>
+     <artifactId>mongo-java-driver</artifactId>
+ </dependency>
 
 <!-- For Weld 2.2.2.Final or later, Jandex is required -->
 <dependency>
@@ -119,8 +144,12 @@ h2 can be omitted when using in-memory batch job repository:
     <artifactId>stax2-api</artifactId>
 </dependency>
 
-<!-- jberet-support includes common reusable batch ItemReader,
-ItemWriter or Batchlet classes for common data types -->
+<!-- jberet-support includes common reusable batch ItemReader &
+ItemWriter classes for various data formats such as CSV, XML,
+JSON, Fixed length, Excel, MongoDB, JDBC, JMS, HornetQ, PDF, etc.
+The application should further provide appropriate transitive
+dependencies from jberet-support, depending on its usage.
+-->
 <dependency>
     <groupId>org.jberet</groupId>
     <artifactId>jberet-support</artifactId>
@@ -129,11 +158,11 @@ ItemWriter or Batchlet classes for common data types -->
 
 ##Configure JBeret Batch Runtime
 ###Configure Batch Subsystem in JBoss EAP or WildFly
-jberet-core module is included in JBoss EAP and WildFly application server as batch processing subsystem. Its configuration data is kept in EAP or WildFly server configuration file (e.g., standalone.xml or domain.xml), and can be viewed or edited through CLI or Admin Console. See EAP or WildFly administration guide for more details. 
+jberet-core module is included in JBoss EAP and WildFly application server as batch processing subsystem. Its configuration data is kept in EAP or WildFly server configuration file (e.g., `standalone.xml` or `domain.xml`), and can be viewed or edited through CLI or Admin Console. See EAP or WildFly administration guide for more details.
 
 The following is a sample batch subsystem configuration that uses:
 * `in-memory` job repository, which is also the default batch job repository type;
-* a `thread-poo`l with `max-threads` `count` of `10`, and each thread has `keepalive-time` of `30` seconds.
+* a `thread-pool` with `max-threads` `count` of `10`, and each thread has `keepalive-time` of `30` seconds.
 
 ```xml
 <subsystem xmlns="urn:jboss:domain:batch:1.0">
@@ -149,10 +178,10 @@ The following is a sample batch subsystem configuration that uses:
 ```
 
 ###Configure JBeret in Java SE
-When running standalone JBeret in Java SE environment, it is configured through `jberet.properties` file. If this file is not present, various defaults will apply as explained in next sections.
+When running standalone JBeret in Java SE environment, it is configured through `jberet.properties` file. If this file is not present in the application classpath, various defaults will apply as explained in next sections.
 
-####Configure JBeret Job Repository in Java SE
-Currently 3 types of job repository are supported:
+####5 Types of JBeret Job Repository
+Currently 4 types of job repository are supported:
 * **`in-memory`**: Batch job data is kept in-memory and will disappear when the JVM exits. `in-memory` job repository will be used if `jberet.properties` is not present, or `job-repository-type` is set to `in-memory` in `jberet-properties`.
 
 * **`jdbc`**: batch job data is saved to a relational database through JDBC. In JBeret standalone Java SE distribution, `job-repository-type` is set to `jdbc` in `jberet.properties`. JBeret contains JDBC DDL scripts for the following common database products, and other unlisted RDBMS can also be supported if appropriate DDL script is provided:
@@ -168,7 +197,9 @@ Currently 3 types of job repository are supported:
     * firebird
 
 * **`mongodb`**: batch job data is saved to MongoDB NoSQL data store. With `mongodb` job repository, `db-url` property can be configured to include all MongoDB connection information.
+* **`infinispan`**: batch job data is saved to Infinispan or Red Hat JDG cache. With `infinispan` job repository, `infinispan-xml` property specifies the resource path to the configuration XML for infinispan job repository. Infinispan job repository can be in-memory or backed by various cache stores supported by the underlying Infinispan or JDG product, such as file-system cache store, JDBC cache store, or LevelDB cache store.
 
+####Configure JDBC Job Repository
 For `jdbc` job repository, the following 5 properties may be specified in `jberet.properties`:
 
 * `db-url`: connection URL, which may also include credentials and connection properties.
@@ -316,6 +347,285 @@ CREATE TABLE IF NOT EXISTS PARTITION_EXECUTION
   PRIMARY KEY (PARTITIONEXECUTIONID, STEPEXECUTIONID),
   FOREIGN KEY (STEPEXECUTIONID) REFERENCES STEP_EXECUTION (STEPEXECUTIONID)
 )!!
+```
+
+####Configure Infinispan Job Repository in Java SE
+`infinispan-xml` property specifies the resource path to the configuration XML for infinispan job repository, and it defaults to `infinispan.xml`. See infinispan or JDG documentation for details how to configure infinispan or JDG. The following are some examples of infinispan XML configuration for various cache stores:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- the default infinispan.xml with file-system cache store
+    bundled in JBeret Java SE distribution
+-->
+
+<infinispan xmlns="urn:infinispan:config:7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:7.0 http://infinispan.org/schemas/infinispan-config-7.0.xsd">
+
+    <cache-container name="jberet" default-cache="JOB_EXECUTION">
+        <transport lock-timeout="60000"/>
+
+        <distributed-cache name="JOB_INSTANCE" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <file-store path="jberet.infinispan.file.store"/>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="JOB_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <file-store path="jberet.infinispan.file.store"/>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="STEP_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <file-store path="jberet.infinispan.file.store"/>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="PARTITION_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <file-store path="jberet.infinispan.file.store"/>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="seq" mode="SYNC" l1-lifespan="0">
+            <transaction mode="BATCH" locking="PESSIMISTIC"/>
+            <persistence>
+                <file-store preload="true" fetch-state="true" path="jberet.infinispan.file.store"/>
+            </persistence>
+        </distributed-cache>
+    </cache-container>
+</infinispan>
+
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- in-memory infinispan example -->
+
+<infinispan xmlns="urn:infinispan:config:7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:7.0 http://infinispan.org/schemas/infinispan-config-7.0.xsd">
+
+    <cache-container name="jberet" default-cache="JOB_EXECUTION">
+        <transport lock-timeout="60000"/>
+
+        <distributed-cache name="JOB_INSTANCE" mode="ASYNC" l1-lifespan="0">
+        </distributed-cache>
+
+        <distributed-cache name="JOB_EXECUTION" mode="ASYNC" l1-lifespan="0">
+        </distributed-cache>
+
+        <distributed-cache name="STEP_EXECUTION" mode="ASYNC" l1-lifespan="0">
+        </distributed-cache>
+
+        <distributed-cache name="PARTITION_EXECUTION" mode="ASYNC" l1-lifespan="0">
+        </distributed-cache>
+
+        <distributed-cache name="seq" mode="SYNC" l1-lifespan="0">
+            <transaction mode="BATCH" locking="PESSIMISTIC"/>
+        </distributed-cache>
+    </cache-container>
+</infinispan>
+
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- infinispan with LevelDB cache store example -->
+
+<infinispan xmlns="urn:infinispan:config:7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:7.0 http://infinispan.org/schemas/infinispan-config-7.0.xsd">
+
+    <cache-container name="jberet" default-cache="JOB_EXECUTION">
+        <transport lock-timeout="60000"/>
+
+        <distributed-cache name="JOB_INSTANCE" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <store class="org.infinispan.persistence.leveldb.LevelDBStore">
+                    <property name="location">/tmp/jberet.infinispan.leveldb.location/JOB_INSTANCE</property>
+                    <property name="expiredLocation">/tmp/jberet.infinispan.leveldb.expiredLocation/JOB_INSTANCE</property>
+                    <property name="implementationType">JAVA</property>
+                </store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="JOB_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <store class="org.infinispan.persistence.leveldb.LevelDBStore">
+                    <property name="location">/tmp/jberet.infinispan.leveldb.location/JOB_EXECUTION</property>
+                    <property name="expiredLocation">/tmp/jberet.infinispan.leveldb.expiredLocation/JOB_EXECUTION</property>
+                    <property name="implementationType">JAVA</property>
+                </store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="STEP_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <store class="org.infinispan.persistence.leveldb.LevelDBStore">
+                    <property name="location">/tmp/jberet.infinispan.leveldb.location/STEP_EXECUTION</property>
+                    <property name="expiredLocation">/tmp/jberet.infinispan.leveldb.expiredLocation/STEP_EXECUTION</property>
+                    <property name="implementationType">JAVA</property>
+                </store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="PARTITION_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <store class="org.infinispan.persistence.leveldb.LevelDBStore">
+                    <property name="location">/tmp/jberet.infinispan.leveldb.location/PARTITION_EXECUTION</property>
+                    <property name="expiredLocation">/tmp/jberet.infinispan.leveldb.expiredLocation/PARTITION_EXECUTION</property>
+                    <property name="implementationType">JAVA</property>
+                </store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="seq" mode="SYNC" l1-lifespan="0">
+            <transaction mode="BATCH" locking="PESSIMISTIC"/>
+            <persistence>
+                <store class="org.infinispan.persistence.leveldb.LevelDBStore" preload="true" fetch-state="true">
+                    <property name="location">/tmp/jberet.infinispan.leveldb.location/seq</property>
+                    <property name="expiredLocation">/tmp/jberet.infinispan.leveldb.expiredLocation/seq</property>
+                    <property name="implementationType">JAVA</property>
+                </store>
+            </persistence>
+        </distributed-cache>
+    </cache-container>
+</infinispan>
+
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- infinispan with JDBC cache store example (H2 Database) -->
+
+<infinispan xmlns="urn:infinispan:config:7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:7.0 http://infinispan.org/schemas/infinispan-config-7.0.xsd">
+
+    <cache-container name="jberet" default-cache="JOB_EXECUTION">
+        <transport lock-timeout="60000"/>
+
+        <distributed-cache name="JOB_INSTANCE" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:7.0"
+                                         fetch-state="false" read-only="false" purge="false">
+                    <connection-pool connection-url="jdbc:h2:mem:infinispan_string_based;DB_CLOSE_DELAY=-1"
+                                     username="sa" driver="org.h2.Driver"/>
+                    <string-keyed-table drop-on-exit="false" create-on-start="true" prefix="JBERET_ISPN">
+                        <id-column name="ID_COLUMN" type="VARCHAR(255)"/>
+                        <data-column name="DATA_COLUMN" type="BINARY"/>
+                        <timestamp-column name="TIMESTAMP_COLUMN" type="BIGINT"/>
+                    </string-keyed-table>
+                </string-keyed-jdbc-store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="JOB_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:7.0"
+                                         fetch-state="false" read-only="false" purge="false">
+                    <connection-pool connection-url="jdbc:h2:mem:infinispan_string_based;DB_CLOSE_DELAY=-1"
+                                     username="sa" driver="org.h2.Driver"/>
+                    <string-keyed-table drop-on-exit="false" create-on-start="true" prefix="JBERET_ISPN">
+                        <id-column name="ID_COLUMN" type="VARCHAR(255)"/>
+                        <data-column name="DATA_COLUMN" type="BINARY"/>
+                        <timestamp-column name="TIMESTAMP_COLUMN" type="BIGINT"/>
+                    </string-keyed-table>
+                </string-keyed-jdbc-store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="STEP_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:7.0"
+                                         fetch-state="false" read-only="false" purge="false">
+                    <connection-pool connection-url="jdbc:h2:mem:infinispan_string_based;DB_CLOSE_DELAY=-1"
+                                     username="sa" driver="org.h2.Driver"/>
+                    <string-keyed-table drop-on-exit="false" create-on-start="true" prefix="JBERET_ISPN">
+                        <id-column name="ID_COLUMN" type="VARCHAR(255)"/>
+                        <data-column name="DATA_COLUMN" type="BINARY"/>
+                        <timestamp-column name="TIMESTAMP_COLUMN" type="BIGINT"/>
+                    </string-keyed-table>
+                </string-keyed-jdbc-store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="PARTITION_EXECUTION" mode="ASYNC" l1-lifespan="0">
+            <persistence>
+                <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:7.0"
+                                         fetch-state="false" read-only="false" purge="false">
+                    <connection-pool connection-url="jdbc:h2:mem:infinispan_string_based;DB_CLOSE_DELAY=-1"
+                                     username="sa" driver="org.h2.Driver"/>
+                    <string-keyed-table drop-on-exit="false" create-on-start="true" prefix="JBERET_ISPN">
+                        <id-column name="ID_COLUMN" type="VARCHAR(255)"/>
+                        <data-column name="DATA_COLUMN" type="BINARY"/>
+                        <timestamp-column name="TIMESTAMP_COLUMN" type="BIGINT"/>
+                    </string-keyed-table>
+                </string-keyed-jdbc-store>
+            </persistence>
+        </distributed-cache>
+
+        <distributed-cache name="seq" mode="SYNC" l1-lifespan="0">
+            <transaction mode="BATCH" locking="PESSIMISTIC"/>
+            <persistence>
+                <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:7.0"
+                                         fetch-state="false" read-only="false" purge="false">
+                    <connection-pool connection-url="jdbc:h2:mem:infinispan_string_based;DB_CLOSE_DELAY=-1"
+                                     username="sa" driver="org.h2.Driver"/>
+                    <string-keyed-table drop-on-exit="false" create-on-start="true" prefix="JBERET_ISPN">
+                        <id-column name="ID_COLUMN" type="VARCHAR(255)"/>
+                        <data-column name="DATA_COLUMN" type="BINARY"/>
+                        <timestamp-column name="TIMESTAMP_COLUMN" type="BIGINT"/>
+                    </string-keyed-table>
+                </string-keyed-jdbc-store>
+            </persistence>
+        </distributed-cache>
+    </cache-container>
+</infinispan>
+
+```
+
+The following additional dependencies are needed for infinispan job repository with LevelDB cache store:
+
+```xml
+<dependency>
+    <groupId>org.infinispan</groupId>
+    <artifactId>infinispan-cachestore-leveldb</artifactId>
+    <version>${version.org.infinispan}</version>
+</dependency>
+
+<!-- Java impl of LevelDB -->
+<dependency>
+    <groupId>org.iq80.leveldb</groupId>
+    <artifactId>leveldb</artifactId>
+    <version>0.7</version>
+</dependency>
+```
+
+The following additional dependencies are needed for infinispan job repository with JDBC cache store:
+
+```xml
+<dependency>
+    <groupId>org.infinispan</groupId>
+    <artifactId>infinispan-cachestore-jdbc</artifactId>
+    <version>${version.org.infinispan}</version>
+</dependency>
+
+<!-- Jdbc connection pool and datasource impl used by infinispan-cachestore-jdbc -->
+<dependency>
+    <groupId>com.mchange</groupId>
+    <artifactId>c3p0</artifactId>
+    <version>0.9.5-pre10</version>
+</dependency>
+
+<!-- the underlying database client jars, such as H2 Database -->
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+</dependency>
 ```
 
 ####Configure JBeret Thread Pool in Java SE
