@@ -80,7 +80,7 @@ To define batch artifact properties in job xml:
 </batchlet>
 ```
 
-Batch artifact properties can be accessed from a batch artifact with injection.  The optional attribute `javax.batch.api.BatchProperty#name` tells which batch property to inject into the annotated field.  When `name` attribute is omitted, the target batch property name is the same as the field name.
+Batch artifact properties can be accessed from a batch artifact with injection.  The optional attribute `javax.batch.api.BatchProperty#name` tells which batch property to inject into the annotated field.  When `name` attribute is omitted, the target batch property name is the same as the field name. The following batchlet class injects the batch property named `name1` configured in the above job.xml into 2 fields:
 
 ```java
 @Named

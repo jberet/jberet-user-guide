@@ -234,6 +234,7 @@ All Excel readers and writers use `jackson-databind` for data transformation beh
 * `customSerializers`
 * `deserializationFeatures`
 * `customDeserializers`
+* `customDataTypeModules`
  
 See Chapter JsonItemReader and JsonItemWriter for more details.
 

@@ -118,6 +118,11 @@ Additional properties for the JDBC connection
 ##Batch Configuration Properties for `jdbcItemReader` Only
 In addition to the common batch properties listed above, `jdbcItemReader` may also be configured through the following batch properties:
 
+###autoCommit
+`boolean`
+
+Auto-commit mode for the JDBC connection.
+
 ###skipBeanValidation
 `boolean`
 
@@ -226,5 +231,7 @@ When `jdbcItemReader` or `jdbcItemWriter` uses custom POJO bean as `beanType`, `
 * `customSerializers`
 * `deserializationFeatures`
 * `customDeserializers`
+* `customDataTypeModules`
+* `customDataTypeModules`
  
 See Chapter JsonItemReader and JsonItemWriter for more details.

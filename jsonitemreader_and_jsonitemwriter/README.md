@@ -118,6 +118,11 @@ A comma-separated list of fully-qualified name of classes that implement `com.fa
  
 See `com.fasterxml.jackson.databind.JsonDeserializer`, and `org.jberet.support.io.MappingJsonFactoryObjectFactory.configureCustomSerializersAndDeserializers(com.fasterxml.jackson.databind.ObjectMapper, java.lang.String, java.lang.String, java.lang.ClassLoader)` for more details.
 
+####customDataTypeModules
+A comma-separated list of Jackson datatype module type ids that extend `com.fasterxml.jackson.databind.Module`. These modules will be registered with `objectMapper`. For example,
+
+`com.fasterxml.jackson.datatype.joda.JodaModule, com.fasterxml.jackson.datatype.jsr353.JSR353Module, com.fasterxml.jackson.datatype.jsr310.JSR310Module`
+ 
 
 ###Batch Properties for `jsonItemReader` Only
 In addition to the above common properties, `jsonItemReader` also supports the following batch properties in job xml:
