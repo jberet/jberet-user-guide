@@ -74,6 +74,13 @@ The resource to read from (for batch readers), or write to (for batch writers).
 
 JNDI lookup name for `com.fasterxml.jackson.dataformat.xml.XmlFactory`, which is used for constructing `com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser` in `xmlItemReader` and `com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator` in `xmlItemWriter`. See class [org.jberet.support.io.XmlFactoryObjectFactory](http://docs.jboss.org/jberet/latest/javadoc/jberet-support/org/jberet/support/io/XmlFactoryObjectFactory.html) for more details.
 
+####customDataTypeModules
+
+A comma-separated list of Jackson datatype module type ids that extend `com.fasterxml.jackson.databind.Module`. These modules will be registered with `xmlMapper`. For example,
+
+`com.fasterxml.jackson.datatype.joda.JodaModule, com.fasterxml.jackson.datatype.jsr353.JSR353Module, com.fasterxml.jackson.datatype.jsr310.JSR310Module`
+ 
+
 ###Batch Properties for `xmlItemReader` Only
 In addition to the above common properties, `xmlItemReader` also supports the following batch properties in job xml:
 

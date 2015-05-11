@@ -12,6 +12,7 @@ JBeret relies on JSR-223 Scripting for the Java&trade; Platform (available in Ja
 | JRuby / Ruby | org.jruby:jruby | Maven Central | <span style="color:green">Yes</span> | reader, processor, writer & batchlet |
 | Scala | org.scala-lang:scala-compiler | Maven Central | <span style="color:red">No</span> | processor & batchlet |
 | PHP | com.caucho:resin-quercus | caucho-repository http://caucho.com/m2/ | <span style="color:red">No</span> | processor & batchlet |
+| R (Renjin) | org.renjin:renjin-script-engine | http://nexus.bedatadriven.com/content/groups/public | <span style="color:red">Yes</span> | processor & batchlet |
 
 The following XML snippet includes all the above script engine dependencies. A batch application should only include what is really needed at runtime.
 
@@ -45,12 +46,26 @@ The following XML snippet includes all the above script engine dependencies. A b
         <groupId>com.caucho</groupId>
         <artifactId>resin-quercus</artifactId>
     </dependency>
+    
+    <dependency>
+        <groupId>org.renjin</groupId>
+        <artifactId>renjin-script-engine</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+    </dependency>
 </dependencies>
 
 <repositories>
     <repository>
         <id>caucho-repository</id>
         <url>http://caucho.com/m2/</url>
+    </repository>
+    <repository>
+        <id>bedatadriven</id>
+        <name>bedatadriven public repo</name>
+        <url>http://nexus.bedatadriven.com/content/groups/public/</url>
     </repository>
 </repositories>
 ```
@@ -473,6 +488,39 @@ end
                 jobContext1.setExitStatus(testName)
                 return testName;
 
+            </script>
+        </batchlet>
+    </step>
+</job>
+```
+
+###Inline R (Renjin) Batchlet:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE job [
+        <!ENTITY batchlet-properties-segment SYSTEM "batchlet-properties-segment.xml">
+        ]>
+
+<job id="batchletRInline" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="batchletRInline.step1">
+        <batchlet>
+            &batchlet-properties-segment;
+            <script type="Renjin">
+                <![CDATA[
+                    stop <- function() {
+                        print("In stop function\n");
+                    }
+
+                    # reads numbers.csv file and calculate statistics of all these numbers
+                    #
+                    process <- function() {
+                        tbl <- read.table(file.path(tempdir(), "numbers.csv"), header=FALSE, sep=",")
+                        numbers <- tbl[2]
+                        print(summary(numbers))
+                    }
+                ]]>
             </script>
         </batchlet>
     </step>
