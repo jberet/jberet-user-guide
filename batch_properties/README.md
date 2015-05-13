@@ -97,7 +97,7 @@ public class MyBatchlet extends AbstractBatchlet {
 }
 ```
 
-Note that job- and step-level batch properties may not be directly injected into batch artifact classes.  However, application may inject an batch artifact property that references a job- or step-level batch property via `jobProperties` substitution.  For example,
+Note that job- and step-level batch properties may not be directly injected into batch artifact classes.  However, application may inject an batch artifact property that references a job- or step-level batch property via `jobProperties` substitution in job xml.  For example,
 
 ```xml
 <job id="job1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
@@ -387,4 +387,16 @@ public class MyBatchlet extends AbstractBatchlet {
     @BatchProperty (name = "file")
     private JarFile asJarFile
 }
+```
+
+Sometimes it's convenient to assign a default value to a field in artifact java class, whether the target batch property is defined in job xml or not. If the target property is resolved to a valid value, it is injected into that field; otherwise, no value is injected and the default field value is preserved. For example,
+
+```java
+/**
+ * Comment character. If commentChar batch property is not specified in job xml,
+ * use the default value '#'.
+ */
+@Inject
+@BatchProperty
+private char commentChar = '#';
 ```

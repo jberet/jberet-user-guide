@@ -2,7 +2,7 @@
 
 * [Introduction](README.md)
 * [Set up JBeret](set_up_jberet/README.md)
-* [Batch JSL Inheritance](batch_jsl_inheritance/README.md)
+* [Batch JSL Inheritance and Composition](batch_jsl_inheritance/README.md)
 * [Batch Properties](batch_properties/README.md)
 * [Develop Batch Artifacts in Script Languages](develop_batch_artifacts_in_script_languages/README.md)
 * [Bean Validation API for Data POJO](bean_validation_api_for_data_pojo/README.md)
