@@ -1,7 +1,7 @@
 # Set up JBeret
 
 ## Maven Repositories
-All JBeret artifacts are available in eitehr [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjberet) or [jboss.org repository](https://repository.jboss.org/nexus/index.html). To use jboss.org repository, add the following to pom.xml:
+All JBeret artifacts are available in either [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cjberet) or [jboss.org repository](https://repository.jboss.org/nexus/index.html). To use jboss.org repository, add the following to pom.xml:
 
 ```xml
 <repositories>
