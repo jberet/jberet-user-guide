@@ -232,6 +232,5 @@ When `jdbcItemReader` or `jdbcItemWriter` uses custom POJO bean as `beanType`, `
 * `deserializationFeatures`
 * `customDeserializers`
 * `customDataTypeModules`
-* `customDataTypeModules`
- 
+
 See Chapter JsonItemReader and JsonItemWriter for more details.

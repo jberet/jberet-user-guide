@@ -78,7 +78,10 @@ JNDI lookup name for `com.fasterxml.jackson.dataformat.xml.XmlFactory`, which is
 
 A comma-separated list of Jackson datatype module type ids that extend `com.fasterxml.jackson.databind.Module`. These modules will be registered with `xmlMapper`. For example,
 
-`com.fasterxml.jackson.datatype.joda.JodaModule, com.fasterxml.jackson.datatype.jsr353.JSR353Module, com.fasterxml.jackson.datatype.jsr310.JSR310Module`
+`com.fasterxml.jackson.datatype.joda.JodaModule,
+com.fasterxml.jackson.datatype.jsr353.JSR353Module,
+com.fasterxml.jackson.datatype.jsr310.JSR310Module,
+com.fasterxml.jackson.module.afterburner.AfterburnerModule`
  
 
 ###Batch Properties for `xmlItemReader` Only

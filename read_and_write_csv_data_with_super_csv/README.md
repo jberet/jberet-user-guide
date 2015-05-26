@@ -14,7 +14,6 @@ The following dependency is required by `csvItemReader` and `csvItemWriter`:
 jberet-support delegates most of the CSV data read, write and processing to [supercsv](http://supercsv.sourceforge.net/), and therefore the configuration of `csvItemReader` and `csvItemWriter` mirrors that of supercsv.
 
 Besides `csvItemReader` and `csvItemWriter`, JBeret also offers other options for dealing with CSV data:
-* `jacksonCsvItemReader` and `JacksonCsvItemWriter`
 * write batch reader, processor or writer in script languages, which may have built-in support or libraries for CSV data format. For more details, refer to chapter Develop Batch Artifacts in Script Languages.
 * use `beanIOItemReader` and `beanIOItemWriter`, which handles common data formats such as CSV, XML, JSON. See Chapter BeanIO ItemReader and ItemWriter for details.
 
