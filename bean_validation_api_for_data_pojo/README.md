@@ -3,7 +3,7 @@ Batch applications can leverage Bean Validation API to perform data validation, 
 
 In each `ItemReader` class, if the configured `beanType` for the incoming data is a custom POJO (i.e., not `java.util.Map`, or `java.util.List`, for example, `Person`, `StockTrade`, `Company`), the reader class will invoke `javax.validation.Validator#validate` to perform the validation.
 
-Any validation constraint failure will cause the reader to throw `org.jberet.support.io.ValidationException`, which is a subclass of `javax.batch.operations.BatchRuntimeException`.
+Any validation constraint failure will cause the reader to throw `javax.validation.ConstraintViolationException`, a subclass of `java.lang.RuntimeException` and `javax.validation.ValidationException`.
 
 The following POJO class, `StockTrade`, demonstrates certain usage of Bean Validation constraints:
 ```java
@@ -76,7 +76,7 @@ If a batch application triggers bean validation at runtime, then the following r
 </dependency>
 ```
 Bean Validation may not be triggered when running a batch application, because
-* the application contains no bean validation annotations;
+* item reader `beanType` property is not a custom POJO type; 
 * bean validation is disabled in job xml for a particular `ItemReader` class.
  
 ## Disable Bean Validation
@@ -85,4 +85,5 @@ Bean validation is enabled by default for all `ItemReader` classes in jberet-sup
 <property name="skipBeanValidation" value="true"/>
 ```
 
+Performing bean validation in your batch application has its performance overhead. So if processing speed and performance is high priority, consider disabling bean validation on `ItemReader` artifacts, or set item reader `beanType` property to a non-POJO type.
 
