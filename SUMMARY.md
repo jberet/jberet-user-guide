@@ -4,6 +4,8 @@
 * [Set up JBeret](set_up_jberet/README.md)
 * [Batch JSL Inheritance and Composition](batch_jsl_inheritance_and_composition/README.md)
 * [Batch Properties](batch_properties/README.md)
+* [Programmatic Job Definition with Java](programmatic_job_definition_with_java/README.md)
+* [Custom CDI Scopes](custom_cdi_scopes/README.md)
 * [Develop Batch Artifacts in Script Languages](develop_batch_artifacts_in_script_languages/README.md)
 * [Bean Validation API for Data POJO](bean_validation_api_for_data_pojo/README.md)
 * [Generate Reports with Jasper Reports](generate_reports_with_jasper_reports/README.md)
