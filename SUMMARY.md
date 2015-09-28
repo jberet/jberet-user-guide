@@ -8,6 +8,7 @@
 * [Custom CDI Scopes](custom_cdi_scopes/README.md)
 * [Develop Batch Artifacts in Script Languages](develop_batch_artifacts_in_script_languages/README.md)
 * [Bean Validation API for Data POJO](bean_validation_api_for_data_pojo/README.md)
+* RESTful API with JAX-RS
 * [Generate Reports with Jasper Reports](generate_reports_with_jasper_reports/README.md)
 * [Read and Write CSV Data with super-csv](read_and_write_csv_data/README.md)
 * [Read and Write CSV Data with jackson-dataformat-csv](read_and_write_csv_data_with_jackson-dataformat-csv/README.md)
@@ -19,5 +20,4 @@
 * [BeanIO ItemReader and ItemWriter](beanio_itemreader_and_itemwriter/README.md)
 * [JmsItemReader and JmsItemWriter](jmsitemreader_and_jmsitemwriter/README.md)
 * [HornetQItemReader and HornetQItemWriter](hornetqitemreader_and_hornetqitemwriter/README.md)
-* RESTful API with JAX-RS
 
