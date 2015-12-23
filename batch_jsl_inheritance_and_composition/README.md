@@ -79,7 +79,7 @@ Child elements (step, job, etc) contain a `jsl-name` attribute, which specifies 
 
 ```
 ## Resolve Custom XML External Entities
-Compared to inheritance, custom XML external entity offers a more direct, low-lelvel means of JSL composition. For example,
+Compared to inheritance, custom XML external entity offers a more direct, low-level means of JSL composition. For example,
 
 <p align="center"><b>job-with-xml-entities.xml</b></p>
 
