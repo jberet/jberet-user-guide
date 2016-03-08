@@ -21,4 +21,5 @@
 * [JmsItemReader and JmsItemWriter](jmsitemreader_and_jmsitemwriter/README.md)
 * [HornetQItemReader and HornetQItemWriter](hornetqitemreader_and_hornetqitemwriter/README.md)
 * [RestItemReader and RestItemWriter](rest_item_reader_writer/RestItemReaderWriter.md)
+* [KafkaItemReader and KafkaItemWriter](kafka/kafkaitemreader_and_kafkaitemwriter.md)
 
