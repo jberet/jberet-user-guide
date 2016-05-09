@@ -400,3 +400,14 @@ Sometimes it's convenient to assign a default value to a field in artifact java 
 @BatchProperty
 private char commentChar = '#';
 ```
+
+## Comparison of Various Batch Properties and Parameters
+
+|  | What | API Access | JSL Access | @BatchProperty Injectable? |
+| -- | -- | -- | -- | -- |
+| Job Parameters | Props when starting or restarting a job | JobExecution.getJobParameters() | #{jobParameters['x']}| No |
+| Job-level Properties | Props element in job.xml directly within <job> element | JobContext.getProperties() | #{jobProperties['x']} | No |
+| Step-level Properties | Props element in job.xml directly within step element | StepContext.getProperties() | #{jobProperties['x']} | No |
+| Batch Artifact Properties | Props directly within batch artifact in job.xml | @Inject @BatchProperty | #{jobParameters['x']} | Yes |
+| Partition Plan Properties | Props element with partition plan element in job.xml | None | #{partitionPlan['x']} | No |
+| Java System Properties | Java system properties | System.getProperty(), System.getProperties() | #{systemProperties['x']} | No |
