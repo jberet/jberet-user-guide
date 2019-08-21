@@ -182,7 +182,10 @@ When running standalone JBeret in Java SE environment, it is configured through 
 
 ####5 Types of JBeret Job Repository
 Currently 4 types of job repository are supported:
-* **`in-memory`**: Batch job data is kept in-memory and will disappear when the JVM exits. `in-memory` job repository will be used if `jberet.properties` is not present, or `job-repository-type` is set to `in-memory` in `jberet-properties`.
+* **`in-memory`**: Batch job data is kept in-memory and will disappear when the JVM exits. `in-memory` job repository will be used if `jberet.properties` is not present, or `job-repository-type` is set to `in-memory` in `jberet-properties`. Please 
+take into account that information about executed jobs can fill in whole memory leading to OOM exception, mainly in long 
+running JVMs (eg. in application server) with lots of job executions. You can use `org.jberet.repository.PurgeBatchlet` to 
+prevent it.
 
 * **`jdbc`**: batch job data is saved to a relational database through JDBC. In JBeret standalone Java SE distribution, `job-repository-type` is set to `jdbc` in `jberet.properties`. JBeret contains JDBC DDL scripts for the following common database products, and other unlisted RDBMS can also be supported if appropriate DDL script is provided:
     * h2 (default database product)
